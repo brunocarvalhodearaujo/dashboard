@@ -9,14 +9,16 @@
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import Login, { type Props as OwnProps } from './Login'
-import { type State, type MergeMapAndDispatchProps } from '../../store'
+import { type State, type MergeMapAndDispatchProps, actions } from '../../store'
 
 const mapStateToProps = (state: State, ownProps: OwnProps) => ({
-  data: {}
+  isAuthenticated: state.me.isAuthenticated
 })
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => ({
-  actions: bindActionCreators({}, dispatch)
+  actions: bindActionCreators({
+    signIn: actions.login
+  }, dispatch)
 })
 
 export type WrappedComponentProps = MergeMapAndDispatchProps<

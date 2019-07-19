@@ -8,17 +8,24 @@
 
 import { createStore, applyMiddleware, Middleware } from 'redux'
 import thunk from 'redux-thunk'
+import * as actions from './actions'
 import reducers, { type State } from './reducers'
+import { createSocketMiddleware } from './socket'
 
 const baseURL: string = ''
 
 export const enhancer: Middleware[] = [
-  thunk.withExtraArgument(baseURL)
+  thunk.withExtraArgument(baseURL),
+  createSocketMiddleware({ debug: process.env.NODE_ENV === 'development' })
 ]
 
 export function configureStore (initialState?: State = {}) {
-  return createStore(reducers, initialState, applyMiddleware(...enhancer))
+  return createStore(
+    reducers,
+    initialState,
+    applyMiddleware(...enhancer)
+  )
 }
 
-export * from './actions'
+export { actions }
 export * from './reducers'
